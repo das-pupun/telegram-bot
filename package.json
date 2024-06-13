@@ -1,0 +1,16 @@
+{
+  "name": "telegram-bot",
+  "version": "1.0.0",
+  "description": "A Telegram bot to fetch student details from Google Sheets",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.6.0",
+    "express": "^4.19.2",
+    "node-fetch": "^2.7.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "telegraf": "^4.16.3"
+  }
+}
