@@ -8,7 +8,7 @@ const { BaseScene, Stage } = Scenes;
 // Load environment variables
 const botToken = process.env.BOT_TOKEN;
 const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL;
-const PORT = process.env.PORT || 3000;
+
 
 // Create a new bot instance
 const bot = new Telegraf(botToken);
@@ -81,7 +81,16 @@ bot.start((ctx) => ctx.scene.enter('courseSelectionScene'));
 // Handle '/restart' command to restart the chat
 bot.command('restart', (ctx) => {
   ctx.scene.enter('courseSelectionScene');
-});
+});const http = require('http');
+const port = process.env.PORT || 8080;
+
+http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Bot is running...');
+}).listen(port);
+
+console.log(`Server running on port ${port}`);
+
 
 // Launch the bot
 bot.launch();
