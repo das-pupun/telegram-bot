@@ -8,6 +8,7 @@ const { BaseScene, Stage } = Scenes;
 // Load environment variables
 const botToken = process.env.BOT_TOKEN;
 const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL;
+const PORT = process.env.PORT || 3000;
 
 // Create a new bot instance
 const bot = new Telegraf(botToken);
