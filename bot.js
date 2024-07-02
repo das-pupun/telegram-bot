@@ -60,7 +60,7 @@ parentNumberScene.on('text', async (ctx) => {
     if (data.error) {
       message = `❌ ${data.error}`;
     } else {
-      message = `📊 *SUMMER INTERNSHIP ATTENDANCE*\n\n*Name:* ${data.NAME}\n*Registration Number:* ${data.REGD_NUMBER}\n*Section:* ${data.SECTION}\n*Percentage Total:* ${data.PERCENTAGE_TOTAL}%\n*Present:* ${data.PRESENT}\n*Absent:* ${data.ABSENT}\n\nTo restart, click /start`;
+      message = `📊 *SUMMER INTERNSHIP ATTENDANCE*\n\n*Name:* ${data.NAME}\n*Registration Number:* ${data.REGD_NUMBER}\n*Company:* ${data.SECTION}\n*Percentage Total:* ${data.PERCENTAGE_TOTAL}%\n*Present:* ${data.PRESENT}\n*Absent:* ${data.ABSENT}\n\nTo restart, click /start`;
     }
     ctx.replyWithMarkdown(message);
   } catch (error) {
