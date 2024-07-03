@@ -95,7 +95,8 @@ bot.command('restart', (ctx) => {
 bot.on('text', (ctx) => {
   ctx.reply('⚠️ Please use the commands /start to interact with the bot.');
 });
-
+const http = require('http');
+const port = process.env.PORT || 10000;
 // Launch the bot
 bot.launch();
 
