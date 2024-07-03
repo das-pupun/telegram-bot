@@ -2,16 +2,17 @@ require('dotenv').config();
 const { Telegraf, session, Scenes, Markup } = require('telegraf');
 const fetch = require('node-fetch');
 
-// Destructure BaseScene and Stage from Scenes
 const { BaseScene, Stage } = Scenes;
 
-// Load environment variables
 const botToken = process.env.BOT_TOKEN;
 const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL;
 
-
-// Create a new bot instance
 const bot = new Telegraf(botToken);
+
+// Helper function to escape Markdown special characters except for percentage sign
+function escapeMarkdown(text) {
+  return (text || '').toString().replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
+}
 
 // Scene to handle course selection
 const courseSelectionScene = new BaseScene('courseSelectionScene');
@@ -60,14 +61,21 @@ parentNumberScene.on('text', async (ctx) => {
     if (data.error) {
       message = `❌ ${data.error}`;
     } else {
-      message = `📊 *SUMMER INTERNSHIP ATTENDANCE*\n\n*Name:* ${data.NAME}\n*Registration Number:* ${data.REGD_NUMBER}\n*Company:* ${data.SECTION}\n*Percentage Total:* ${data.PERCENTAGE_TOTAL}%\n*Present:* ${data.PRESENT}\n*Absent:* ${data.ABSENT}\n\nTo restart, click /start`;
+      const escapedName = escapeMarkdown(data.NAME);
+      const escapedRegdNumber = escapeMarkdown(data.REGD_NUMBER);
+      const escapedSection = escapeMarkdown(data.SECTION);
+      const escapedPercentageTotal = data.PERCENTAGE_TOTAL.toString(); // No need to escape percentage
+      const escapedPresent = escapeMarkdown(data.PRESENT.toString());
+      const escapedAbsent = escapeMarkdown(data.ABSENT.toString());
+
+      message = `📊 *SUMMER INTERNSHIP ATTENDANCE*\n\n*Name:* ${escapedName}\n*Registration Number:* ${escapedRegdNumber}\n*Organization:* ${escapedSection}\n*Percentage Total:* ${escapedPercentageTotal}%\n*Present:* ${escapedPresent}\n*Absent:* ${escapedAbsent}\n\nTo restart, click /start`;
     }
     ctx.replyWithMarkdown(message);
   } catch (error) {
     console.error('Error fetching data:', error);
     ctx.reply('⚠️ Sorry, there was an error retrieving your information. Please try again later.');
   }
-  ctx.scene.leave(); // Exit the scene after handling the request
+  ctx.scene.leave();
 });
 
 // Create the stage manager and register the scenes
@@ -81,16 +89,12 @@ bot.start((ctx) => ctx.scene.enter('courseSelectionScene'));
 // Handle '/restart' command to restart the chat
 bot.command('restart', (ctx) => {
   ctx.scene.enter('courseSelectionScene');
-});const http = require('http');
-const port = process.env.PORT || 8080;
+});
 
-http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Bot is running...');
-}).listen(port);
-
-console.log(`Server running on port ${port}`);
-
+// Handle unexpected text messages
+bot.on('text', (ctx) => {
+  ctx.reply('⚠️ Please use the commands /start to interact with the bot.');
+});
 
 // Launch the bot
 bot.launch();
