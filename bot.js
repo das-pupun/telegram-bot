@@ -5,9 +5,6 @@ const http = require('http');
 const { BaseScene, Stage } = Scenes;
 
 const port = process.env.PORT || 3000; // Set a default port if PORT is not found
-
-const bot = new Telegraf(botToken);
-
 // Helper function to escape Markdown special characters except for percentage sign
 function escapeMarkdown(text) {
   return (text || '').toString().replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
