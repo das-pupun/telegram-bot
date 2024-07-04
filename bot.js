@@ -1,11 +1,12 @@
 require('dotenv').config();
 const { Telegraf, session, Scenes, Markup } = require('telegraf');
 const fetch = require('node-fetch');
-
+const http = require('http');
 const { BaseScene, Stage } = Scenes;
 
 const botToken = process.env.BOT_TOKEN;
 const googleScriptUrl = process.env.GOOGLE_SCRIPT_URL;
+const port = process.env.PORT || 3000; // Set a default port if PORT is not found
 
 const bot = new Telegraf(botToken);
 
@@ -95,8 +96,15 @@ bot.command('restart', (ctx) => {
 bot.on('text', (ctx) => {
   ctx.reply('⚠️ Please use the commands /start to interact with the bot.');
 });
-const http = require('http');
-const port = process.env.PORT || 10000;
+
+// Create a simple server to keep the bot running
+http.createServer((req, res) => {
+  res.write("Bot is running...");
+  res.end();
+}).listen(port, () => {
+  console.log(`Bot server is running on port ${port}`);
+});
+
 // Launch the bot
 bot.launch();
 
